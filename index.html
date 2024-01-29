@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="index.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-do List</title>
+  </head>
+  <body>
+    <div class="container">
+      <div>
+        <h1>To-do List</h1>
+        <input type="text" id="task" placeholder="Enter your Task here" />
+        <button class="Add" onclick="addTask()">Add Task</button>
+
+        <div class="Tasks" id="TaskDiv">
+          <!-- <div class="singular-task">
+            <input class="check" type="checkbox" />
+            <h1>This is a to-do Task</h1>
+            <button class="del">Delete</button> -->
+          </div>
+        </div>
+
+        <script>
+
+        var TaskArray = [];
+        let Task = localStorage.getItem('Tasks')
+        if(Task){
+            TaskArray = JSON.parse(Task);
+        }
+        
+
+          for (let task of TaskArray) {
+            const TasksDiv = document.getElementById("TaskDiv");
+
+            const singularDiv = document.createElement("Div");
+            singularDiv.className = "singular-task";
+
+            const checkBox = document.createElement("input");
+            checkBox.type = "checkbox";
+            checkBox.className = "check";
+            checkBox.onchange = toggleStatus;
+            singularDiv.appendChild(checkBox);
+
+            const taskHeading = document.createElement("h1");
+            taskHeading.innerHTML += task.task;
+
+            if (task.status === "Complete") {
+              checkBox.checked = true;
+              taskHeading.classList.add("strike");
+            }
+
+            const deleteButton = document.createElement("button");
+            deleteButton.className = "del";
+            deleteButton.innerHTML = "Delete";
+            deleteButton.onclick = deleteTask;
+
+            singularDiv.appendChild(taskHeading);
+            singularDiv.appendChild(deleteButton);
+            TasksDiv.appendChild(singularDiv);
+          }
+
+          function addTask() {
+            
+            const task = document.getElementById("task").value;
+            if(task === ''){
+                alert('The To-do Shouldnt be Empty')
+                return;
+            }
+            const taskObj = {
+              task: task,
+              status: "Pending",
+            };
+
+            TaskArray.push(taskObj);
+
+            const TasksDiv = document.getElementById("TaskDiv");
+
+            const singularDiv = document.createElement("Div");
+            singularDiv.className = "singular-task";
+
+            const checkBox = document.createElement("input");
+            checkBox.type = "checkbox";
+            checkBox.className = "check";
+            checkBox.onchange = toggleStatus;
+            singularDiv.appendChild(checkBox);
+
+
+            const taskHeading = document.createElement("h1");
+            taskHeading.innerHTML += task;
+
+            const deleteButton = document.createElement("button");
+            deleteButton.className = "del";
+            deleteButton.innerHTML = "Delete";
+            deleteButton.onclick = deleteTask;
+
+            singularDiv.appendChild(taskHeading);
+            singularDiv.appendChild(deleteButton);
+            TasksDiv.appendChild(singularDiv);
+            localStorage.setItem('Tasks', JSON.stringify(TaskArray));
+            document.getElementById("task").value = ''
+          }
+
+          function deleteTask() {
+            const button = event.target;
+            const singularTask = button.closest('.singular-task')
+            const index = Array.from(singularTask.parentElement.children).indexOf(singularTask);
+            const task = TaskArray[index];
+
+            TaskArray.splice(index,1);
+            singularTask.remove();
+            localStorage.setItem('Tasks', JSON.stringify(TaskArray));
+            console.log(TaskArray)
+          }
+
+          function toggleStatus() {
+            
+            const checkbox = event.target;
+            const singularTask = checkbox.closest('.singular-task')
+            const h1ele = singularTask.querySelector('h1')
+
+            const index = Array.from(singularTask.parentElement.children).indexOf(singularTask);
+            const task = TaskArray[index];
+
+            console.log('invoked', index)
+
+            console.log(h1ele)
+            task.status = checkbox.checked ? "completed" : "pending";
+
+            if (TaskArray[index].status === "completed") {
+                TaskArray[index].status = 'Complete';
+              h1ele.classList.add("strike");
+            } else {
+                TaskArray[index].status = 'Pending';
+              h1ele.classList.remove("strike");
+            }
+
+            localStorage.setItem('Tasks', JSON.stringify(TaskArray));
+          }
+        </script>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+.container{
+    display: flex;
+    background-color: antiquewhite;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    padding: 2rem;
+}
+
+body{
+    background-color: darkslategrey;
+}
+
+input{
+    width: 300px;
+    height: 30px;
+}
+
+.Add{
+    background-color: aquamarine;
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+.Tasks{
+    padding: 1rem;
+    gap: 3rem;
+}
+
+.singular-task{
+    display: flex;
+    gap: 3rem;
+    border: solid 4px gray;
+    padding: 1rem;
+    border-radius: 20px;
+    margin-top: 2rem;
+}
+
+.strike{
+    text-decoration: line-through;
+}
+
+.check{
+    height: 2rem;
+    align-self: center;
+    width: 20px;
+}
+
+.del{
+    background-color: red;
+    padding: 1rem;
+    color: white;
+    border-radius: 1rem;
+    align-self: center;
+}
